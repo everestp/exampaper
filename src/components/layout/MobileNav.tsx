@@ -16,9 +16,9 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent side="left" className="pr-0 sm:max-w-xs">
         <div className="flex items-center justify-between pr-4">
-          <Link to="/" onClick={onClose} className="flex items-center gap-2">
-            <span className="font-bold text-xl text-study-700">Study Hub</span>
-            <span className="text-xl text-muted-foreground">Archive</span>
+          <Link to="/" onClick={onClose} className="flex items-center ">
+            <span className="font-bold text-xl text-study-700">exampaper</span>
+            <span className="text-xl text-muted-foreground">.org</span>
           </Link>
           <Button variant="ghost" size="icon" onClick={onClose}>
             <X className="h-5 w-5" />
