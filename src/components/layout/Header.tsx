@@ -32,8 +32,8 @@ export function Header() {
               <span className="text-xl text-muted-foreground">.org</span>
             </div>
             <div className="md:hidden">
-              <span className="font-bold text-xl text-study-700">SH</span>
-              <span className="text-xl text-muted-foreground">A</span>
+              <span className="font-bold text-sm text-study-700">exampaper</span>
+              <span className="text-sm text-muted-foreground">.org</span>
             </div>
           </Link>
         </div>
