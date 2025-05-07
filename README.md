@@ -1,73 +1,55 @@
-# Welcome to your Lovable project
+# ExamPaper.org
 
-## Project info
+Welcome to **ExamPaper.org**! This repository serves as a collection of past exam papers, solutions, and study materials for various subjects and topics.
 
-**URL**: https://lovable.dev/projects/298a2a4c-d87f-4e80-a2a1-d1bf4597a0c2
+## Table of Contents
 
-## How can I edit this code?
+- [About](#about)
+- [Structure](#structure)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-There are several ways of editing your application.
+## About
 
-**Use Lovable**
+ExamPaper.org is designed to help students and educators access and organize past exam papers and related study resources efficiently. It includes categorized content for easy navigation and reference.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/298a2a4c-d87f-4e80-a2a1-d1bf4597a0c2) and start prompting.
+## Structure
 
-Changes made via Lovable will be committed automatically to this repo.
+The repository is organized as follows:
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+/e:/exam-paper-org/
+├── Subject1/
+├── Subject2/
+├── Solutions/
+├── Resources/
+└── README.md
 ```
 
-**Edit a file directly in GitHub**
+- **Subject1, Subject2**: Folders for specific subjects or topics.
+- **Solutions**: Detailed solutions to past exam papers.
+- **Resources**: Additional references, links, or tools.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Usage
 
-**Use GitHub Codespaces**
+1. Clone the repository:
+    ```bash
+    git clone <repository-url>
+    ```
+2. Navigate through the folders to find the materials you need.
+3. Add or update content as necessary.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Contributing
 
-## What technologies are used for this project?
+Contributions are welcome! Please follow these steps:
 
-This project is built with:
+1. Fork the repository.
+2. Create a new branch for your changes.
+3. Submit a pull request with a detailed description.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## License
 
-## How can I deploy this project?
+This project is licensed under the [MIT License](LICENSE).
 
-Simply open [Lovable](https://lovable.dev/projects/298a2a4c-d87f-4e80-a2a1-d1bf4597a0c2) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Happy studying!
