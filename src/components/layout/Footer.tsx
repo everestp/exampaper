@@ -33,6 +33,10 @@ export function Footer() {
         </div>
         <div className="mt-8 pt-6 border-t text-center text-sm text-muted-foreground">
           &copy; {currentYear} exampaper.org. All rights reserved.
+
+        <div>
+          Developed By <a href="https://www.linkedin.com/in/everestp/" className="text-blue-900  font-semibold">Everest Paudel</a>
+        </div>
         </div>
       </div>
     </footer>
