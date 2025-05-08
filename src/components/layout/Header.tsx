@@ -61,19 +61,9 @@ const Header = () => {
               </Button>
             </Link>
 
-            <Link to="/mcq">
-              <Button variant="ghost" className="flex items-center text-gray-600 hover:text-blue-600 dark:text-gray-300">
-                <PenTool className="h-5 w-5 mr-1" />
-                Practice MCQs
-              </Button>
-            </Link>
+          
 
-            <Link to="/discussions">
-              <Button variant="ghost" className="flex items-center text-gray-600 hover:text-blue-600 dark:text-gray-300">
-                <MessageSquare className="h-5 w-5 mr-1" />
-                Discussions
-              </Button>
-            </Link>
+           
 
             <Link to="/profile">
               <Button variant="ghost" className="flex items-center text-gray-600 hover:text-blue-600 dark:text-gray-300">
@@ -129,19 +119,9 @@ const Header = () => {
               </div>
             </Link>
             
-            <Link to="/mcq" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300">
-              <div className="flex items-center">
-                <PenTool className="h-5 w-5 mr-2" />
-                Practice MCQs
-              </div>
-            </Link>
+         
             
-            <Link to="/discussions" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300">
-              <div className="flex items-center">
-                <MessageSquare className="h-5 w-5 mr-2" />
-                Discussions
-              </div>
-            </Link>
+           
             
             <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300">
               <div className="flex items-center">

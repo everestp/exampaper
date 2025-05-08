@@ -17,6 +17,7 @@ import DiscussionPage from "./pages/DiscussionPage";
 import CreateDiscussionPage from "./pages/CreateDiscussionPage";
 import DiscussionDetailPage from "./pages/DiscussionDetailsPage";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
+import DiscussionsPage from "./components/NavBar";
 
 function AppRoutes() {
   return (

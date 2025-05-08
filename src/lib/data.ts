@@ -48,12 +48,34 @@ export interface RevisionMaterial {
 
 // Faculties
 export const facultyData: Faculty[] = [
-  { id: "csit", name: "BSc CSIT" },
-  { id: "bca", name: "BCA" },
-  { id: "medical", name: "Medical" },
-  { id: "management", name: "Management" },
-  { id: "ctevt", name: "CTEVT" }
-];
+  { "id": "csit", "name": "BSc CSIT" },
+  { "id": "bca", "name": "BCA" },
+  { "id": "medical", "name": "MBBS" },
+  { "id": "management", "name": "BBA" },
+  { "id": "ctevt", "name": "BEd" },
+  { "id": "bbs", "name": "BBS" },
+  { "id": "bbm", "name": "BBM" },
+  { "id": "bim", "name": "BIM" },
+  { "id": "bit", "name": "BIT" },
+  { "id": "bsc_microbiology", "name": "BSc Microbiology" },
+  { "id": "bsc_physics", "name": "BSc Physics" },
+  { "id": "bsc_forestry", "name": "BSc Forestry" },
+  { "id": "bsc_agriculture", "name": "BSc Agriculture" },
+  { "id": "bsc_environmental_science", "name": "BSc Environmental Science" },
+  { "id": "bsc_food_technology", "name": "BSc Food Technology" },
+  { "id": "bsc_nursing", "name": "BSc Nursing" },
+  { "id": "bsc_pharmacy", "name": "BSc Pharmacy" },
+  { "id": "bsc_veterinary", "name": "BSc Veterinary Science" },
+  { "id": "bachelor_civil_engineering", "name": "Bachelor of Civil Engineering" },
+  { "id": "bachelor_computer_engineering", "name": "Bachelor of Computer Engineering" },
+  { "id": "bachelor_electronics_engineering", "name": "Bachelor of Electronics, Communication and Information Engineering" },
+  { "id": "bachelor_mechanical_engineering", "name": "Bachelor of Mechanical Engineering" },
+  { "id": "bachelor_architecture", "name": "Bachelor of Architecture" },
+  { "id": "bachelor_hotel_management", "name": "Bachelor of Hotel Management (BHM)" },
+  { "id": "ba", "name": "Bachelor of Arts (BA)" },
+  { "id": "basw", "name": "Bachelor of Arts in Social Work (BASW)" },
+  { "id": "bachelor_law", "name": "Bachelor of Law (LLB)" }
+]
 
 // BSc CSIT Subjects by Semester
 export const csitSemester1Subjects: Subject[] = [
