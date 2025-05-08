@@ -49,6 +49,7 @@ export interface RevisionMaterial {
 // Faculties
 export const facultyData: Faculty[] = [
   { id: "csit", name: "BSc CSIT" },
+  { id: "bca", name: "BCA" },
   { id: "medical", name: "Medical" },
   { id: "management", name: "Management" },
   { id: "ctevt", name: "CTEVT" }

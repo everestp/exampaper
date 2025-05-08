@@ -1,31 +1,29 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { 
+  Menu,
+  Search,
+  User,
+  BookOpen,
+  Home,
+  PenTool,
+  MessageSquare,
+  Edit
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
-import { Menu, Search, Book, FileText } from "lucide-react";
-import { MobileNav } from "./MobileNav";
-import { useFaculty } from "@/contexts/FacultyContext";
-import { cn } from "@/lib/utils";
+const Header = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-export function Header() {
-  const [showMobileNav, setShowMobileNav] = useState(false);
-  const { selectedFaculty } = useFaculty();
-  const params = useParams();
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(prev => !prev);
+  };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setShowMobileNav(true)}
-          >
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle menu</span>
-          </Button>
+    <nav className="bg-white shadow-md dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2">
             <div className="hidden md:flex">
               <span className="font-bold text-xl text-study-700">exampaper</span>
@@ -36,108 +34,134 @@ export function Header() {
               <span className="text-sm text-muted-foreground">.org</span>
             </div>
           </Link>
-        </div>
-        
-        {selectedFaculty && (
-          <div className="hidden md:flex items-center gap-4">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Question Papers</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                      {Array.from({ length: 8 }, (_, i) => i + 1).map((semesterNum) => (
-                        <li key={semesterNum}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to={`/faculty/${selectedFaculty.id}/semester/${semesterNum}`}
-                              className={cn(
-                                "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                                params.semesterId === String(semesterNum) && "bg-accent"
-                              )}
-                            >
-                              <div className="text-sm font-medium leading-none">Semester {semesterNum}</div>
-                              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                Access question papers for semester {semesterNum}
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Study Notes</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                      {Array.from({ length: 8 }, (_, i) => i + 1).map((semesterNum) => (
-                        <li key={semesterNum}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to={`/faculty/${selectedFaculty.id}/notes/semester/${semesterNum}`}
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                            >
-                              <div className="text-sm font-medium leading-none">Semester {semesterNum}</div>
-                              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                Access study notes for semester {semesterNum}
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Revision Materials</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                      {Array.from({ length: 8 }, (_, i) => i + 1).map((semesterNum) => (
-                        <li key={semesterNum}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to={`/faculty/${selectedFaculty.id}/revision/semester/${semesterNum}`}
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                            >
-                              <div className="text-sm font-medium leading-none">Semester {semesterNum}</div>
-                              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                Access last-minute revision materials for semester {semesterNum}
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-            <div className="flex items-center gap-1 bg-muted px-3 py-1 rounded-md">
-              <span className="text-sm text-muted-foreground">Faculty:</span>
-              <span className="text-sm font-medium">{selectedFaculty.name}</span>
-            </div>
           </div>
-        )}
-        
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm" className="hidden md:flex gap-2">
-            <Search className="h-4 w-4" />
-            <span>Search</span>
-          </Button>
-          <Link to="/login">
-            <Button variant="ghost" size="sm">Log In</Button>
-          </Link>
-          <Link to="/admin">
-            <Button variant="outline" size="sm">Admin</Button>
-          </Link>
+
+          {/* Desktop navigation */}
+          <div className="hidden md:flex items-center space-x-4">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search papers and notes..."
+                className="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64"
+              />
+              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+            </div>
+
+            <Link to="/">
+              <Button variant="ghost" className="flex items-center text-gray-600 hover:text-blue-600 dark:text-gray-300">
+                <Home className="h-5 w-5 mr-1" />
+                Home
+              </Button>
+            </Link>
+
+            <Link to="/books">
+              <Button variant="ghost" className="flex items-center text-gray-600 hover:text-blue-600 dark:text-gray-300">
+                <BookOpen className="h-5 w-5 mr-1" />
+                Libary
+              </Button>
+            </Link>
+
+            <Link to="/mcq">
+              <Button variant="ghost" className="flex items-center text-gray-600 hover:text-blue-600 dark:text-gray-300">
+                <PenTool className="h-5 w-5 mr-1" />
+                Practice MCQs
+              </Button>
+            </Link>
+
+            <Link to="/discussions">
+              <Button variant="ghost" className="flex items-center text-gray-600 hover:text-blue-600 dark:text-gray-300">
+                <MessageSquare className="h-5 w-5 mr-1" />
+                Discussions
+              </Button>
+            </Link>
+
+            <Link to="/profile">
+              <Button variant="ghost" className="flex items-center text-gray-600 hover:text-blue-600 dark:text-gray-300">
+                <User className="h-5 w-5 mr-1" />
+                Profile
+              </Button>
+            </Link>
+
+            <Link to="/login">
+              <Button className="bg-blue-600 text-white hover:bg-blue-700">
+                Login
+              </Button>
+            </Link>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="flex md:hidden">
+            <button
+              onClick={toggleMobileMenu}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              <span className="sr-only">Open main menu</span>
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
         </div>
       </div>
-      
-      <MobileNav 
-        isOpen={showMobileNav} 
-        onClose={() => setShowMobileNav(false)} 
-      />
-    </header>
+
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white dark:bg-gray-900 pb-3 pt-2 animate-fade-in">
+          <div className="px-4 space-y-3">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search papers and notes..."
+                className="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full"
+              />
+              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+            </div>
+            
+            <Link to="/" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300">
+              <div className="flex items-center">
+                <Home className="h-5 w-5 mr-2" />
+                Home
+              </div>
+            </Link>
+            
+            <Link to="/books" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300">
+              <div className="flex items-center">
+                <BookOpen className="h-5 w-5 mr-2" />
+                Libary
+              </div>
+            </Link>
+            
+            <Link to="/mcq" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300">
+              <div className="flex items-center">
+                <PenTool className="h-5 w-5 mr-2" />
+                Practice MCQs
+              </div>
+            </Link>
+            
+            <Link to="/discussions" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300">
+              <div className="flex items-center">
+                <MessageSquare className="h-5 w-5 mr-2" />
+                Discussions
+              </div>
+            </Link>
+            
+            <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300">
+              <div className="flex items-center">
+                <User className="h-5 w-5 mr-2" />
+                Profile
+              </div>
+            </Link>
+            
+            <div className="pt-2">
+              <Link to="/login">
+                <Button className="w-full bg-blue-600 text-white hover:bg-blue-700">
+                  Login
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
   );
-}
+};
+
+export default Header;
