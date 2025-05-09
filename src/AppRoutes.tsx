@@ -18,12 +18,13 @@ import CreateDiscussionPage from "./pages/CreateDiscussionPage";
 import DiscussionDetailPage from "./pages/DiscussionDetailsPage";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
 import DiscussionsPage from "./components/NavBar";
+import CourseSelection from "./lib/test";
 
 function AppRoutes() {
   return (
     <FacultyProvider>
       <FavoritesProvider>
-
+<AdminPanel/>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Index />} />
@@ -43,6 +44,7 @@ function AppRoutes() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+
       </FavoritesProvider>
     </FacultyProvider>
   );

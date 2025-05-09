@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
-import { semesterData, questionPapersData, facultyData, notesData, revisionMaterialsData } from "@/lib/data";
+import { facultyData } from "@/lib/facultyData";
 import { Plus, File, Trash, FileText, BookOpen } from "lucide-react";
 
 const AdminPanel = () => {
@@ -30,18 +29,40 @@ const AdminPanel = () => {
   // Upload form state
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFaculty, setSelectedFaculty] = useState("");
-  const [selectedSemester, setSelectedSemester] = useState("");
-  const [selectedSubject, setSelectedSubject] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedStructure, setSelectedStructure] = useState("");
+  const [structures, setStructures] = useState<string[]>([]);
+  const [subjects, setSubjects] = useState<string[]>([]);
+  const [selectedYear, setSelectedYear] = useState<string>("");
   const [title, setTitle] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   
-  // Available subjects based on selected semester
-  const availableSubjects = semesterData.find(s => s.id === selectedSemester)?.subjects || [];
-  
+  // Handle faculty change
+  const handleFacultyChange = (value: string) => {
+    setSelectedFaculty(value);
+    setSelectedStructure("");
+    setSubjects([]);
+
+    const faculty = facultyData.find(f => f.id === value);
+    if (faculty) {
+      setStructures(Object.keys(faculty.structure));
+    } else {
+      setStructures([]);
+    }
+  };
+
+  // Handle semester/structure change
+  const handleStructureChange = (value: string) => {
+    setSelectedStructure(value);
+    
+    const faculty = facultyData.find(f => f.id === selectedFaculty);
+    if (faculty) {
+      setSubjects(faculty.structure[value] || []);
+    }
+  };
+
   // Available years (last 10 years)
   const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
+  const years = Array.from({ length: 10 }, (_, i) => currentYear - i + 57);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -56,9 +77,9 @@ const AdminPanel = () => {
   const handleUpload = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const requiredFields = [selectedFile, selectedFaculty, selectedSemester, selectedSubject];
+    const requiredFields = [selectedFile, selectedFaculty, selectedStructure, subjects.length > 0];
     if (contentType === "papers" && !selectedYear) {
-      requiredFields.push(selectedYear);
+      requiredFields.push(true);
     }
     
     if (requiredFields.some(field => !field)) {
@@ -82,9 +103,11 @@ const AdminPanel = () => {
       // Reset form
       setSelectedFile(null);
       setTitle("");
+      setSelectedFaculty("");
+      setSelectedStructure("");
+      setSubjects([]);
+      setSelectedYear("");
       setIsUploading(false);
-      
-      // In a real app, this would refresh the content list
     }, 1500);
   };
 
@@ -99,8 +122,6 @@ const AdminPanel = () => {
       title: `${type} deleted`,
       description: `The ${type.toLowerCase()} has been deleted successfully`,
     });
-    
-    // In a real app, this would refresh the content list
   };
 
   const getContentIcon = () => {
@@ -111,17 +132,6 @@ const AdminPanel = () => {
         return <BookOpen className="h-4 w-4" />;
       case "revision":
         return <FileText className="h-4 w-4" />;
-    }
-  };
-
-  const getContentItems = () => {
-    switch (contentType) {
-      case "papers":
-        return questionPapersData.slice(0, 5);
-      case "notes":
-        return notesData.slice(0, 5);
-      case "revision":
-        return revisionMaterialsData.slice(0, 5);
     }
   };
 
@@ -147,7 +157,7 @@ const AdminPanel = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleUpload} className="space-y-6">
+              <form className="space-y-6" onSubmit={handleUpload}>
                 <div className="space-y-4">
                   <div className="flex gap-4 flex-wrap">
                     <Button 
@@ -182,7 +192,10 @@ const AdminPanel = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="faculty">Faculty</Label>
-                      <Select value={selectedFaculty} onValueChange={setSelectedFaculty}>
+                      <Select 
+                        value={selectedFaculty} 
+                        onValueChange={handleFacultyChange}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select faculty" />
                         </SelectTrigger>
@@ -198,14 +211,20 @@ const AdminPanel = () => {
                   
                     <div className="space-y-2">
                       <Label htmlFor="semester">Semester</Label>
-                      <Select value={selectedSemester} onValueChange={setSelectedSemester}>
+                      <Select 
+                        value={selectedStructure} 
+                        onValueChange={handleStructureChange}
+                        disabled={!selectedFaculty}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select semester" />
                         </SelectTrigger>
                         <SelectContent>
-                          {semesterData.map((semester) => (
-                            <SelectItem key={semester.id} value={semester.id}>
-                              {semester.name}
+                          {structures.map((structure, index) => (
+                            <SelectItem key={index} value={structure}>
+                          {structure.replace(/(semester|year)(\d+)/i, (match, word, num) => 
+  `${word.charAt(0).toUpperCase() + word.slice(1)} ${num}`
+)}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -215,17 +234,15 @@ const AdminPanel = () => {
                     <div className="space-y-2">
                       <Label htmlFor="subject">Subject</Label>
                       <Select 
-                        value={selectedSubject} 
-                        onValueChange={setSelectedSubject}
-                        disabled={!selectedSemester}
+                        disabled={!selectedStructure}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select subject" />
                         </SelectTrigger>
                         <SelectContent>
-                          {availableSubjects.map((subject) => (
-                            <SelectItem key={subject.id} value={subject.id}>
-                              {subject.name}
+                          {subjects.map((subject, index) => (
+                            <SelectItem key={index} value={subject}>
+                              {subject}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -235,7 +252,10 @@ const AdminPanel = () => {
                     {contentType === "papers" && (
                       <div className="space-y-2">
                         <Label htmlFor="year">Year</Label>
-                        <Select value={selectedYear} onValueChange={setSelectedYear}>
+                        <Select 
+                          value={selectedYear} 
+                          onValueChange={setSelectedYear}
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="Select year" />
                           </SelectTrigger>
@@ -341,34 +361,7 @@ const AdminPanel = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {getContentItems().map((item) => {
-                      const faculty = facultyData.find(f => f.id === item.facultyId);
-                      const semester = semesterData.find(s => s.id === item.semesterId);
-                      const subject = semester?.subjects.find(s => s.id === item.subjectId);
-                      
-                      return (
-                        <TableRow key={item.id}>
-                          <TableCell className="font-medium flex items-center gap-2">
-                            {getContentIcon()}
-                            {item.title}
-                          </TableCell>
-                          <TableCell>{faculty?.name}</TableCell>
-                          <TableCell>{semester?.name}</TableCell>
-                          <TableCell>{subject?.name}</TableCell>
-                          {'year' in item && <TableCell>{item.year}</TableCell>}
-                          <TableCell>{new Date(item.uploadedAt).toLocaleDateString()}</TableCell>
-                          <TableCell className="text-right">
-                            <Button 
-                              variant="ghost" 
-                              size="icon"
-                              onClick={() => handleDeleteContent(item.id, contentType === "papers" ? "Question Paper" : contentType === "notes" ? "Study Note" : "Revision Material")}
-                            >
-                              <Trash className="h-4 w-4" />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                    {/* Content items would be rendered here */}
                   </TableBody>
                 </Table>
               </div>

@@ -1,8 +1,9 @@
 
 import { createContext, useContext, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Faculty, facultyData } from "@/lib/data";
+
 import { useToast } from "@/components/ui/use-toast";
+import { facultyData, Faculty } from "@/lib/facultyData";
 
 interface FacultyContextType {
   selectedFaculty: Faculty | null;
