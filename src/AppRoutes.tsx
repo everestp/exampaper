@@ -24,7 +24,6 @@ function AppRoutes() {
   return (
     <FacultyProvider>
       <FavoritesProvider>
-<AdminPanel/>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Index />} />
