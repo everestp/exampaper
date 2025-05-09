@@ -50,7 +50,7 @@ console.log("Does the semester  data is printed Sucessfuly",faculty)
         <div className="mb-6">
           <h1 className="text-3xl font-bold">{faculty.name}</h1>
           <p className="text-muted-foreground mt-1">
-            Select a subject to view available question papers
+            Select a subject to view  Resources
           </p>
         </div>
 
@@ -59,17 +59,15 @@ console.log("Does the semester  data is printed Sucessfuly",faculty)
             <Card key={subject[index]} className="hover:border-study-300 transition-all">
               <CardHeader>
                 <CardTitle>{subject}</CardTitle>
-                <CardDescription>10 years of question papers available</CardDescription>
+                <CardDescription>Question Paper | Notes | Revision Material </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Access question papers from {new Date().getFullYear() - 9 +57} to {new Date().getFullYear()+57}
-                </p>
+              
               </CardContent>
               <CardFooter>
                 <Button variant="default" size="sm" className="w-full" asChild>
                   <Link to={`/faculty/${facultyId}/semester/${semesterId}/subject/${subject}`}>
-                    View Papers
+                    View 
                     <ArrowRight className="ml-1 h-4 w-4" />
                   </Link>
                 </Button>
@@ -80,20 +78,7 @@ console.log("Does the semester  data is printed Sucessfuly",faculty)
           }
         </div>
 
-        <div className="mt-8 flex gap-4 flex-wrap">
-          <Link to={`/faculty/${facultyId}/notes/semester/${semesterId}`}>
-            <Button variant="outline" className="gap-2">
-              <BookOpen className="w-4 h-4" />
-              View Study Notes
-            </Button>
-          </Link>
-          <Link to={`/faculty/${facultyId}/revision/semester/${semesterId}`}>
-            <Button variant="outline" className="gap-2">
-              <FileText className="w-4 h-4" />
-              View Revision Materials
-            </Button>
-          </Link>
-        </div>
+        
       </div>
     </div>
   );

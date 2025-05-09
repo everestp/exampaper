@@ -569,7 +569,7 @@ export interface RevisionMaterial {
     { id: "qp9", subject: "Financial Accounting", title: "Financial Accounting - 2022", year: 2021, facultyId: "bba", semesterId: "3", downloadUrl: "https://example.com/question-paper/financial-accounting-2022.pdf", uploadedAt: "2022-05-22T11:45:00Z" },
     { id: "qp10", subject: "Investment Analysis", title: "Investment Analysis - 2022", year: 2021, facultyId: "bba", semesterId: "6", downloadUrl: "https://example.com/question-paper/investment-analysis-2022.pdf", uploadedAt: "2022-06-15T14:00:00Z" },
     { id: "qp11", subject: "Machine Learning", title: "Machine Learning - 2023", year: 2019, facultyId: "csit", semesterId: "7", downloadUrl: "https://example.com/question-paper/machine-learning-2023.pdf", uploadedAt: "2023-08-01T10:30:00Z" },
-    { id: "qp12", subject: "Data Mining and Warehousing", title: "Data Mining and Warehousing - 2021", year: 2023, facultyId: "csit", semesterId: "7", downloadUrl: "https://example.com/question-paper/data-mining-2023.pdf", uploadedAt: "2023-09-05T09:45:00Z" },
+    { id: "qp12", subject: "Data Mining and Warehousing", title: "Data Mining and Warehousing - 2021", year: 2019, facultyId: "csit", semesterId: "7", downloadUrl: "https://example.com/question-paper/data-mining-2023.pdf", uploadedAt: "2023-09-05T09:45:00Z" },
 
 
 

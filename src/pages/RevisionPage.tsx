@@ -3,36 +3,32 @@ import { useParams, Navigate, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SemesterSidebar } from "@/components/SemesterSidebar";
-import { semesterData, getRevisionMaterials } from "@/lib/data";
+import { getRevisionMaterials } from "@/lib/facultyData";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { useFaculty } from "@/contexts/FacultyContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText } from "lucide-react";
 
 const RevisionPage = () => {
-  const { facultyId, semesterId, subjectId } = useParams();
+  const { facultyId, semesterId, subject } = useParams();
   const { selectedFaculty } = useFaculty();
 
   // Find the current semester
-  const semester = semesterData.find(s => s.id === semesterId);
+  const semester = selectedFaculty.structure.find((s) => s.id === semesterId);
   
-  // Find the current subject if subjectId is provided
-  const subject = subjectId ? semester?.subjects.find(s => s.id === subjectId) : null;
-
+  // Find the current subject if subject is provided
+  const currentSubject = semester?.subjects.find((s) => s === subject);
   // If semester not found or no faculty selected, navigate to 404
   if (!semester || !facultyId || !selectedFaculty) {
     return <Navigate to="/not-found" />;
   }
 
-  // If subject ID is provided but not found, navigate to 404
-  if (subjectId && !subject) {
-    return <Navigate to="/not-found" />;
-  }
+
 
   // If we're viewing revision materials for a specific subject
   if (subject) {
     // Get revision materials for this subject
-    const revisionMaterials = getRevisionMaterials(facultyId, semesterId!, subjectId!);
+    const revisionMaterials = getRevisionMaterials(facultyId, semesterId!, subject!);
 
     return (
       <div className="container flex flex-col md:flex-row gap-6 py-8">
@@ -67,13 +63,13 @@ const RevisionPage = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink>{subject.name}</BreadcrumbLink>
+                <BreadcrumbLink>{subject}</BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
           
           <div className="mb-6">
-            <h1 className="text-3xl font-bold">{subject.name} - Revision Materials</h1>
+            <h1 className="text-3xl font-bold text-gray-800">{subject}</h1>
             <p className="text-muted-foreground mt-1">
               {selectedFaculty.name} Faculty, {semester.name}
             </p>
@@ -82,12 +78,12 @@ const RevisionPage = () => {
           <Tabs defaultValue="revision" className="mb-6">
             <TabsList>
               <TabsTrigger value="papers" asChild>
-                <Link to={`/faculty/${facultyId}/semester/${semesterId}/subject/${subjectId}`}>
+                <Link to={`/faculty/${facultyId}/semester/${semesterId}/subject/${subject}`}>
                   Question Papers
                 </Link>
               </TabsTrigger>
               <TabsTrigger value="notes" asChild>
-                <Link to={`/faculty/${facultyId}/notes/semester/${semesterId}/subject/${subjectId}`}>
+                <Link to={`/faculty/${facultyId}/notes/semester/${semesterId}/subject/${subject}`}>
                   Study Notes
                 </Link>
               </TabsTrigger>
@@ -180,23 +176,23 @@ const RevisionPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {semester.subjects.map((subject) => (
-            <Card key={subject.id} className="hover:border-study-300 transition-all">
+            <Card key={subject} className="hover:border-study-300 transition-all">
               <CardHeader>
                 <h2 className="text-xl font-bold flex items-center gap-2">
                   <FileText className="h-5 w-5" />
-                  {subject.name}
+                  {subject}
                 </h2>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Access last-minute revision materials for {subject.name}
+                  Access last-minute revision materials for {subject}
                 </p>
                 <Button 
                   variant="default" 
                   className="w-full" 
                   asChild
                 >
-                  <Link to={`/faculty/${facultyId}/revision/semester/${semesterId}/subject/${subject.id}`}>
+                  <Link to={`/faculty/${facultyId}/revision/semester/${semesterId}/subject/${subject}`}>
                     View Revision Materials
                   </Link>
                 </Button>

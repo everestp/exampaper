@@ -1,5 +1,5 @@
 import { useParams, Navigate, Link } from "react-router-dom";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SemesterSidebar } from "@/components/SemesterSidebar";
 import { getQuestionPapers } from "@/lib/facultyData";
@@ -110,7 +110,7 @@ const SubjectPage = () => {
                     to={`/faculty/${facultyId}/semester/${semesterId}`}
                     className="text-blue-600 hover:underline"
                   >
-                    {semester.name}
+                    {semester.name} -
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
@@ -125,7 +125,9 @@ const SubjectPage = () => {
 
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-800">{subject}</h1>
+            <h1 className="text-3xl font-bold text-gray-800">{subject}
+            
+            </h1>
             <p className="text-lg text-gray-500 mt-2">
               {selectedFaculty.name} Faculty, {semester.name}
             </p>
@@ -168,79 +170,77 @@ const SubjectPage = () => {
             </TabsList>
 
             <TabsContent value="papers" className="mt-6">
-              {sortedYears.length === 0 ? (
-                <div className="text-center py-10">
-                  <p className="text-gray-500 text-lg">
-                    No question papers available for {subject}.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-8">
-                  {sortedYears.map((year) => (
-                    <Card
-                      key={year}
-                      className="shadow-md hover:shadow-lg transition-shadow duration-200"
+       {sortedYears.length === 0 ? (
+    <div className="text-center py-10">
+      <p className="text-gray-500 text-lg">
+        No question papers available for {subject}.
+      </p>
+    </div>
+  ) : (
+    <div className="space-y-8">
+      {sortedYears.map((year) => (
+        <Card
+          key={year}
+          className="shadow-md hover:shadow-lg transition-shadow duration-200"
+        >
+         
+          <CardContent className="pt-6">
+            <ul className="space-y-4">
+              {papersByYear[year].map((paper) => (
+                <li
+                
+                  key={paper.id}
+                  className="flex items-center justify-between py-2 border-b last:border-b-0"
+                >
+                  <div className="flex flex-col">
+                 
+                    <span className="text-gray-800 font-medium">
+                     { `${paper.subject} - ${paper.year}`}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      Year: {paper.year}
+                    </span>
+                  </div>
+                  <div className="flex gap-3">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-2 hover:bg-gray-100"
+                      asChild
                     >
-                      <CardHeader className="bg-gray-50 border-b">
-                        <h2 className="text-2xl font-semibold text-gray-800">
-                          {subject}
-                        </h2>
-                      </CardHeader>
-                      <CardContent className="pt-6">
-                        <ul className="space-y-4">
-                          {papersByYear[year].map((paper) => (
-                            <li
-                              key={paper.id}
-                              className="flex items-center justify-between py-2 border-b last:border-b-0"
-                            >
-                              <div className="flex flex-col">
-                                <span className="text-gray-800 font-medium">
-                                 { `${paper.subject} - ${paper.year}`}
-                                </span>
-                                <span className="text-sm text-gray-500">
-                                  Year: {paper.year}
-                                </span>
-                              </div>
-                              <div className="flex gap-3">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="flex items-center gap-2 hover:bg-gray-100"
-                                  asChild
-                                >
-                                  <a
-                                    href={paper.downloadUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    <Eye className="w-4 h-4" />
-                                    View
-                                  </a>
-                                </Button>
-                                <Button
-                                  variant="default"
-                                  size="sm"
-                                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white"
-                                  asChild
-                                >
-                                  <a
-                                    href={paper.downloadUrl}
-                                    download
-                                    rel="noopener noreferrer"
-                                  >
-                                    <Download className="w-4 h-4" />
-                                    Download
-                                  </a>
-                                </Button>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
+                      <a
+                        href={paper.downloadUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Eye className="w-4 h-4" />
+                        View
+                      </a>
+                    </Button>
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white"
+                      asChild
+                    >
+                      <a
+                        href={paper.downloadUrl}
+                        download
+                        rel="noopener noreferrer"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download
+                      </a>
+                    </Button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )}
             </TabsContent>
           </Tabs>
         </div>

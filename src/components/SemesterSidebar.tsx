@@ -9,7 +9,7 @@ import { useFaculty } from "@/contexts/FacultyContext";
 
 export function SemesterSidebar() {
   const location = useLocation();
-  const { facultyId, semesterId } = useParams();
+  const { facultyId, semesterId  } = useParams();
   const { selectedFaculty } = useFaculty();
   console.log("This is seleceted faculty   from semester side bar",selectedFaculty)
 
@@ -29,38 +29,7 @@ export function SemesterSidebar() {
         <h2 className="text-lg font-semibold">{selectedFaculty.name} Faculty</h2>
       </div>
       <div className="p-2">
-        <div className="mb-4 flex flex-col gap-2">
-          <Link to={`/faculty/${facultyId}/semester/${semesterId}`}>
-            <Button 
-              variant={!isNotesSection && !isRevisionSection ? "default" : "outline"} 
-              size="sm" 
-              className="w-full justify-start gap-2"
-            >
-              <FileText className="h-4 w-4" />
-              Question Papers
-            </Button>
-          </Link>
-          <Link to={`/faculty/${facultyId}/notes/semester/${semesterId}`}>
-            <Button 
-              variant={isNotesSection ? "default" : "outline"} 
-              size="sm" 
-              className="w-full justify-start gap-2"
-            >
-              <BookOpen className="h-4 w-4" />
-              Study Notes
-            </Button>
-          </Link>
-          <Link to={`/faculty/${facultyId}/revision/semester/${semesterId}`}>
-            <Button 
-              variant={isRevisionSection ? "default" : "outline"} 
-              size="sm" 
-              className="w-full justify-start gap-2"
-            >
-              <FileText className="h-4 w-4" />
-              Revision Materials
-            </Button>
-          </Link>
-        </div>
+       
 
         <div className="mb-2 px-2 pt-2 text-sm font-medium text-muted-foreground">
           Semesters
