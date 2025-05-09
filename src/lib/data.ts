@@ -152,9 +152,11 @@ const currentYear = new Date().getFullYear();
 
 // Helper Functions
 export const getQuestionPapers = (facultyId: string, semesterId: string, subjectId: string): QuestionPaper[] => {
-  return questionPapersData
+ const a = questionPapersData
     .filter(paper => paper.facultyId === facultyId && paper.semesterId === semesterId && paper.subjectId === subjectId)
     .sort((a, b) => b.year - a.year);
+    console.log("Does some question paper is returing",a)
+    return a
 };
 
 export const getNotes = (facultyId: string, semesterId: string, subjectId: string): Note[] => {

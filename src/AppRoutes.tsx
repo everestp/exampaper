@@ -29,9 +29,9 @@ function AppRoutes() {
           <Route path="/" element={<Index />} />
           <Route path="/faculty/:facultyId">
             <Route path="semester/:semesterId" element={<SemesterPage />} />
-            <Route path="semester/:semesterId/subject/:subjectId" element={<SubjectPage />} />
-            <Route path="notes/semester/:semesterId/subject/:subjectId" element={<NotesPage />} />
-            <Route path="revision/semester/:semesterId/subject/:subjectId" element={<RevisionPage />} />
+            <Route path="semester/:semesterId/subject/:subject" element={<SubjectPage />} />
+            <Route path="notes/semester/:semesterId/subject/:subject" element={<NotesPage />} />
+            <Route path="revision/semester/:semesterId/subject/:subject" element={<RevisionPage />} />
           </Route>
           <Route path="/books" element={<BookBrowser />} />
             <Route path="/books/:bookId" element={<BookDetails />} />

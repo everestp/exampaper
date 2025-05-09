@@ -11,6 +11,7 @@ import { useState } from "react";
 import { sub } from "date-fns";
 const SemesterPage = () => {
   const { facultyId, semesterId } = useParams();
+  console.log("This is semsteer page facId seemId",facultyId,semesterId)
   const { selectedFaculty } = useFaculty();
   const [selectedSemester, setSelectedSemester] = useState<string | null>(null);
   const [subjects, setSubjects] = useState<string[]>([]);
@@ -47,7 +48,7 @@ console.log("Does the semester  data is printed Sucessfuly",faculty)
       </div>
       <div className="flex-1">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold">{faculty.name}  Faculty</h1>
+          <h1 className="text-3xl font-bold">{faculty.name}</h1>
           <p className="text-muted-foreground mt-1">
             Select a subject to view available question papers
           </p>

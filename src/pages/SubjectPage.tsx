@@ -1,41 +1,71 @@
-
 import { useParams, Navigate, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SemesterSidebar } from "@/components/SemesterSidebar";
-import { semesterData, getQuestionPapers } from "@/lib/data";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { getQuestionPapers } from "@/lib/facultyData";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { useFaculty } from "@/contexts/FacultyContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, FileText } from "lucide-react";
+import { BookOpen, FileText, Download, Eye } from "lucide-react";
+
+interface QuestionPaper {
+  id: string;
+  subject: string;
+  title: string;
+  year: number;
+  facultyId: string;
+  semesterId: string;
+  downloadUrl: string;
+  uploadedAt: string;
+}
 
 const SubjectPage = () => {
-  const { facultyId, semesterId, subjectId } = useParams();
+  const { facultyId, semesterId, subject } = useParams<{
+    facultyId: string;
+    semesterId: string;
+    subject: string;
+  }>();
   const { selectedFaculty } = useFaculty();
 
-  // Find the current semester
-  const semester = semesterData.find(s => s.id === semesterId);
-  
-  // Find the current subject
-  const subject = semester?.subjects.find(s => s.id === subjectId);
+  // Validate parameters and faculty data
+  if (!facultyId || !semesterId || !subject || !selectedFaculty) {
+    return <Navigate to="/not-found" />;
+  }
 
-  // If semester or subject not found or no faculty selected, navigate to 404
-  if (!semester || !subject || !facultyId || !selectedFaculty) {
+  // Find the current semester
+  const semester = selectedFaculty.structure.find((s) => s.id === semesterId);
+  const currentSubject = semester?.subjects.find((s) => s === subject);
+
+  // If semester or subject not found, navigate to 404
+  if (!semester || !currentSubject) {
     return <Navigate to="/not-found" />;
   }
 
   // Get question papers for this subject
-  const questionPapers = getQuestionPapers(facultyId, semesterId!, subjectId!);
+  const questionPapers: QuestionPaper[] = getQuestionPapers(
+    facultyId,
+    semesterId,
+    subject
+  );
 
   // Group question papers by year
-  const papersByYear = questionPapers.reduce((acc, paper) => {
-    const year = paper.year;
-    if (!acc[year]) {
-      acc[year] = [];
-    }
-    acc[year].push(paper);
-    return acc;
-  }, {} as Record<number, typeof questionPapers>);
+  const papersByYear = questionPapers.reduce(
+    (acc, paper) => {
+      const year = paper.year;
+      if (!acc[year]) {
+        acc[year] = [];
+      }
+      acc[year].push(paper);
+      return acc;
+    },
+    {} as Record<number, QuestionPaper[]>
+  );
 
   // Sort years in descending order
   const sortedYears = Object.keys(papersByYear)
@@ -43,88 +73,177 @@ const SubjectPage = () => {
     .sort((a, b) => b - a);
 
   return (
-    <div className="container flex flex-col md:flex-row gap-6 py-8">
-      <div className="w-full md:w-64 md:shrink-0">
-        <SemesterSidebar />
-      </div>
-      <div className="flex-1">
-        <Breadcrumb className="mb-4">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to={`/faculty/${facultyId}`}>{selectedFaculty.name}</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to={`/faculty/${facultyId}/semester/${semesterId}`}>{semester.name}</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink>{subject.name}</BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold">{subject.name}</h1>
-          <p className="text-muted-foreground mt-1">
-            {selectedFaculty.name} Faculty, {semester.name}
-          </p>
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Sidebar */}
+        <div className="w-full md:w-64 md:shrink-0">
+          <SemesterSidebar />
         </div>
 
-        <Tabs defaultValue="papers" className="mb-6">
-          <TabsList>
-            <TabsTrigger value="papers">Question Papers</TabsTrigger>
-            <TabsTrigger value="notes" asChild>
-              <Link to={`/faculty/${facultyId}/notes/semester/${semesterId}/subject/${subjectId}`}>
-                Study Notes
-              </Link>
-            </TabsTrigger>
-            <TabsTrigger value="revision" asChild>
-              <Link to={`/faculty/${facultyId}/revision/semester/${semesterId}/subject/${subjectId}`}>
-                Revision Materials
-              </Link>
-            </TabsTrigger>
-          </TabsList>
+        {/* Main Content */}
+        <div className="flex-1">
+          {/* Breadcrumb */}
+          <Breadcrumb className="mb-6">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/" className="text-blue-600 hover:underline">
+                    Home
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link
+                    to={`/faculty/${facultyId}`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {selectedFaculty.name}
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link
+                    to={`/faculty/${facultyId}/semester/${semesterId}`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {semester.name}
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink className="font-semibold">
+                  {subject}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
 
-          <TabsContent value="papers" className="mt-6">
-            <div className="space-y-6">
-              {sortedYears.map((year) => (
-                <Card key={year}>
-                  <CardHeader className="pb-3">
-                    <h2 className="text-xl font-bold">{year}</h2>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      {papersByYear[year].map((paper) => (
-                        <li key={paper.id} className="flex items-center justify-between border-b pb-2">
-                          <span>{paper.title}</span>
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm">
-                              View
-                            </Button>
-                            <Button variant="default" size="sm" className="bg-study-600 hover:bg-study-700">
-                              Download
-                            </Button>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-gray-800">{subject}</h1>
+            <p className="text-lg text-gray-500 mt-2">
+              {selectedFaculty.name} Faculty, {semester.name}
+            </p>
+          </div>
+
+          {/* Tabs */}
+          <Tabs defaultValue="papers" className="mb-8">
+            <TabsList className="grid w-full grid-cols-3 bg-gray-100 rounded-lg p-1">
+              <TabsTrigger
+                value="papers"
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md"
+              >
+                <FileText className="w-4 h-4 mr-2" />
+                Question Papers
+              </TabsTrigger>
+              <TabsTrigger
+                value="notes"
+                asChild
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md"
+              >
+                <Link
+                  to={`/faculty/${facultyId}/notes/semester/${semesterId}/subject/${subject}`}
+                >
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Study Notes
+                </Link>
+              </TabsTrigger>
+              <TabsTrigger
+                value="revision"
+                asChild
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md"
+              >
+                <Link
+                  to={`/faculty/${facultyId}/revision/semester/${semesterId}/subject/${subject}`}
+                >
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Revision Materials
+                </Link>
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="papers" className="mt-6">
+              {sortedYears.length === 0 ? (
+                <div className="text-center py-10">
+                  <p className="text-gray-500 text-lg">
+                    No question papers available for {subject}.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-8">
+                  {sortedYears.map((year) => (
+                    <Card
+                      key={year}
+                      className="shadow-md hover:shadow-lg transition-shadow duration-200"
+                    >
+                      <CardHeader className="bg-gray-50 border-b">
+                        <h2 className="text-2xl font-semibold text-gray-800">
+                          {subject}
+                        </h2>
+                      </CardHeader>
+                      <CardContent className="pt-6">
+                        <ul className="space-y-4">
+                          {papersByYear[year].map((paper) => (
+                            <li
+                              key={paper.id}
+                              className="flex items-center justify-between py-2 border-b last:border-b-0"
+                            >
+                              <div className="flex flex-col">
+                                <span className="text-gray-800 font-medium">
+                                 { `${paper.subject} - ${paper.year}`}
+                                </span>
+                                <span className="text-sm text-gray-500">
+                                  Year: {paper.year}
+                                </span>
+                              </div>
+                              <div className="flex gap-3">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="flex items-center gap-2 hover:bg-gray-100"
+                                  asChild
+                                >
+                                  <a
+                                    href={paper.downloadUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <Eye className="w-4 h-4" />
+                                    View
+                                  </a>
+                                </Button>
+                                <Button
+                                  variant="default"
+                                  size="sm"
+                                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white"
+                                  asChild
+                                >
+                                  <a
+                                    href={paper.downloadUrl}
+                                    download
+                                    rel="noopener noreferrer"
+                                  >
+                                    <Download className="w-4 h-4" />
+                                    Download
+                                  </a>
+                                </Button>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </div>
   );

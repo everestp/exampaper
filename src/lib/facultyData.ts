@@ -12,6 +12,39 @@
   structure: Period[];
 }
 
+
+
+export interface QuestionPaper {
+  id: string;
+  title: string;
+  year: number;
+  facultyId: string;
+  semesterId: string;
+  subject: string;
+  downloadUrl: string;
+  uploadedAt: string;
+}
+
+export interface Note {
+  id: string;
+  title: string;
+  facultyId: string;
+  semesterId: string;
+  subject: string;
+  downloadUrl: string;
+  uploadedAt: string;
+}
+
+export interface RevisionMaterial {
+  id: string;
+  title: string;
+  facultyId: string;
+  semesterId: string;
+  subject: string;
+  downloadUrl: string;
+  uploadedAt: string;
+}
+
  export const facultyData: Faculty[] = [
   {
     id: "csit",
@@ -517,6 +550,74 @@
 
   const currentYear = new Date().getFullYear();
   // Placeholder for other data (assuming unchanged)
-  export const questionPapersData = [];
-  export const notesData = [];
-  export const revisionMaterialsData = [];
+  export const questionPapersData: QuestionPaper[] = [
+    // Existing entries
+    { id: "qp1", subject: "Introduction to Information Technology", title: "Introduction to IT - 2022", year: 2022, facultyId: "csit", semesterId: "1", downloadUrl: "https://example.com/question-paper/it-2022.pdf", uploadedAt: "2022-07-10T10:00:00Z" },
+    { id: "qp2", subject: "Programming in C", title: "Programming in C - 2021", year: 2021, facultyId: "csit", semesterId: "1", downloadUrl: "https://example.com/question-paper/c-2021.pdf", uploadedAt: "2021-06-05T12:30:00Z" },
+    { id: "qp3", subject: "Database Management Systems", title: "Database Management Systems - 2023", year: 2023, facultyId: "csit", semesterId: "4", downloadUrl: "https://example.com/question-paper/dbms-2023.pdf", uploadedAt: "2023-07-01T14:00:00Z" },
+    { id: "qp4", subject: "Human Anatomy", title: "Human Anatomy - 2022", year: 2022, facultyId: "mbbs", semesterId: "1", downloadUrl: "https://example.com/question-paper/anatomy-2022.pdf", uploadedAt: "2022-09-12T09:15:00Z" },
+    { id: "qp5", subject: "General Surgery", title: "General Surgery - 2021", year: 2021, facultyId: "mbbs", semesterId: "4", downloadUrl: "https://example.com/question-paper/surgery-2021.pdf", uploadedAt: "2021-06-18T11:30:00Z" },
+    { id: "qp6", subject: "Operating Systems", title: "Operating Systems - 2022", year: 2022, facultyId: "bca", semesterId: "3", downloadUrl: "https://example.com/question-paper/os-2022.pdf", uploadedAt: "2022-08-20T11:45:00Z" },
+    { id: "qp7", subject: "Java Programming", title: "Java Programming - 2023", year: 2023, facultyId: "bca", semesterId: "5", downloadUrl: "https://example.com/question-paper/java-2023.pdf", uploadedAt: "2023-06-15T14:00:00Z" },
+    { id: "qp8", subject: "Cyber Security", title: "Cyber Security - 2023", year: 2023, facultyId: "bca", semesterId: "7", downloadUrl: "https://example.com/question-paper/cyber-security-2023.pdf", uploadedAt: "2023-07-10T10:00:00Z" },
+    { id: "qp9", subject: "Financial Accounting", title: "Financial Accounting - 2022", year: 2022, facultyId: "bba", semesterId: "3", downloadUrl: "https://example.com/question-paper/financial-accounting-2022.pdf", uploadedAt: "2022-05-22T11:45:00Z" },
+    { id: "qp10", subject: "Investment Analysis", title: "Investment Analysis - 2022", year: 2022, facultyId: "bba", semesterId: "6", downloadUrl: "https://example.com/question-paper/investment-analysis-2022.pdf", uploadedAt: "2022-06-15T14:00:00Z" },
+    { id: "qp11", subject: "Machine Learning", title: "Machine Learning - 2023", year: 2023, facultyId: "csit", semesterId: "7", downloadUrl: "https://example.com/question-paper/machine-learning-2023.pdf", uploadedAt: "2023-08-01T10:30:00Z" },
+    { id: "qp12", subject: "Data Mining and Warehousing", title: "Data Mining and Warehousing - 2023", year: 2023, facultyId: "csit", semesterId: "7", downloadUrl: "https://example.com/question-paper/data-mining-2023.pdf", uploadedAt: "2023-09-05T09:45:00Z" },
+    // New entries
+
+    { id: "qp9", subject: "Financial Accounting", title: "Financial Accounting - 2022", year: 2021, facultyId: "bba", semesterId: "3", downloadUrl: "https://example.com/question-paper/financial-accounting-2022.pdf", uploadedAt: "2022-05-22T11:45:00Z" },
+    { id: "qp10", subject: "Investment Analysis", title: "Investment Analysis - 2022", year: 2021, facultyId: "bba", semesterId: "6", downloadUrl: "https://example.com/question-paper/investment-analysis-2022.pdf", uploadedAt: "2022-06-15T14:00:00Z" },
+    { id: "qp11", subject: "Machine Learning", title: "Machine Learning - 2023", year: 2019, facultyId: "csit", semesterId: "7", downloadUrl: "https://example.com/question-paper/machine-learning-2023.pdf", uploadedAt: "2023-08-01T10:30:00Z" },
+    { id: "qp12", subject: "Data Mining and Warehousing", title: "Data Mining and Warehousing - 2021", year: 2023, facultyId: "csit", semesterId: "7", downloadUrl: "https://example.com/question-paper/data-mining-2023.pdf", uploadedAt: "2023-09-05T09:45:00Z" },
+
+
+
+
+
+
+
+    { id: "qp13", subject: "Engineering Mathematics I", title: "Engineering Mathematics I - 2024", year: 2024, facultyId: "civil-eng", semesterId: "1", downloadUrl: "https://example.com/question-paper/math1-civil-2024.pdf", uploadedAt: "2024-01-15T10:00:00Z" },
+    { id: "qp14", subject: "Constitutional Law", title: "Constitutional Law - 2022", year: 2022, facultyId: "llb", semesterId: "1", downloadUrl: "https://example.com/question-paper/constitutional-law-2022.pdf", uploadedAt: "2022-12-10T14:30:00Z" },
+    { id: "qp15", subject: "Educational Psychology", title: "Educational Psychology - 2023", year: 2023, facultyId: "bed", semesterId: "1", downloadUrl: "https://example.com/question-paper/edu-psych-2023.pdf", uploadedAt: "2023-06-20T09:15:00Z" },
+    { id: "qp16", subject: "Pharmaceutical Chemistry", title: "Pharmaceutical Chemistry - 2021", year: 2021, facultyId: "bpharm", semesterId: "1", downloadUrl: "https://example.com/question-paper/pharm-chem-2021.pdf", uploadedAt: "2021-07-05T11:00:00Z" },
+    { id: "qp17", subject: "Circuit Theory", title: "Circuit Theory - 2023", year: 2023, facultyId: "elec-eng", semesterId: "2", downloadUrl: "https://example.com/question-paper/circuit-theory-2023.pdf", uploadedAt: "2023-08-12T13:45:00Z" },
+    { id: "qp18", subject: "Epidemiology", title: "Epidemiology - 2022", year: 2022, facultyId: "bph", semesterId: "2", downloadUrl: "https://example.com/question-paper/epidemiology-2022.pdf", uploadedAt: "2022-11-25T10:30:00Z" },
+    { id: "qp19", subject: "Sociology", title: "Sociology - 2024", year: 2024, facultyId: "ba", semesterId: "1", downloadUrl: "https://example.com/question-paper/sociology-2024.pdf", uploadedAt: "2024-02-10T12:00:00Z" },
+    { id: "qp20", subject: "Introduction to Social Work", title: "Introduction to Social Work - 2023", year: 2023, facultyId: "bsw", semesterId: "1", downloadUrl: "https://example.com/question-paper/social-work-2023.pdf", uploadedAt: "2023-07-15T14:00:00Z" },
+    { id: "qp21", subject: "Food and Beverage Service I", title: "Food and Beverage Service I - 2022", year: 2022, facultyId: "bhm", semesterId: "1", downloadUrl: "https://example.com/question-paper/food-beverage-2022.pdf", uploadedAt: "2022-10-05T09:45:00Z" },
+    { id: "qp22", subject: "Object-Oriented Programming", title: "Object-Oriented Programming - 2023", year: 2023, facultyId: "csit", semesterId: "2", downloadUrl: "https://example.com/question-paper/oop-2023.pdf", uploadedAt: "2023-09-20T11:30:00Z" },
+  ];
+  
+  export const notesData: Note[] = [
+    { id: "note1", subject: "Introduction to Information Technology", title: "IT Notes", facultyId: "csit", semesterId: "1", downloadUrl: "https://example.com/notes/it.pdf", uploadedAt: "2022-08-15T14:30:00Z" },
+    { id: "note2", subject: "Digital Logic", title: "Digital Logic Basics", facultyId: "csit", semesterId: "1", downloadUrl: "https://example.com/notes/digital-logic.pdf", uploadedAt: "2021-07-02T16:00:00Z" },
+    { id: "note3", subject: "Database Management Systems", title: "DBMS Concepts", facultyId: "csit", semesterId: "4", downloadUrl: "https://example.com/notes/dbms.pdf", uploadedAt: "2022-09-28T09:00:00Z" },
+    { id: "note4", subject: "General Medicine", title: "General Medicine Overview", facultyId: "mbbs", semesterId: "4", downloadUrl: "https://example.com/notes/general-medicine.pdf", uploadedAt: "2022-10-10T13:15:00Z" },
+    // More entries up to note20...
+  ];
+  export const revisionMaterialsData: RevisionMaterial[] = [
+    { id: "rev1", subject: "Cryptography", title: "Quick Revision - Cryptography", facultyId: "csit", semesterId: "5", downloadUrl: "https://example.com/revision/crypto.pdf", uploadedAt: "2022-11-05T10:45:00Z" },
+    { id: "rev2", subject: "Microprocessor", title: "Microprocessor Cheat Sheet", facultyId: "csit", semesterId: "2", downloadUrl: "https://example.com/revision/microprocessor.pdf", uploadedAt: "2022-05-18T08:15:00Z" },
+    { id: "rev3", subject: "Forensic Medicine", title: "Forensic Medicine Summary", facultyId: "mbbs", semesterId: "3", downloadUrl: "https://example.com/revision/forensic-medicine.pdf", uploadedAt: "2022-07-30T11:25:00Z" },
+    { id: "rev4", subject: "Java Programming", title: "Java Programming Key Notes", facultyId: "bca", semesterId: "5", downloadUrl: "https://example.com/revision/java.pdf", uploadedAt: "2022-09-15T13:40:00Z" },
+    { id: "rev5", subject: "Theory of Computation", title: "Theory of Computation Cheat Sheet", facultyId: "csit", semesterId: "4", downloadUrl: "https://example.com/revision/theory-of-computation.pdf", uploadedAt: "2023-04-18T09:30:00Z" },
+  ];
+
+  
+  // Helper Functions
+  export const getQuestionPapers = (facultyId: string, semesterId: string, subject: string): QuestionPaper[] => {
+    return questionPapersData
+      .filter(paper => paper.facultyId === facultyId && paper.semesterId === semesterId && paper.subject === subject)
+      .sort((a, b) => b.year - a.year);
+  };
+  
+  export const getNotes = (facultyId: string, semesterId: string, subject: string): Note[] => {
+    return notesData
+      .filter(note => note.facultyId === facultyId && note.semesterId === semesterId && note.subject === subject);
+  };
+  
+  export const getRevisionMaterials = (facultyId: string, semesterId: string, subject: string): RevisionMaterial[] => {
+    return revisionMaterialsData
+      .filter(material => material.facultyId === facultyId && material.semesterId === semesterId && material.subject === subject);
+  };
