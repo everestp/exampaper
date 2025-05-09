@@ -552,7 +552,7 @@ export interface RevisionMaterial {
   // Placeholder for other data (assuming unchanged)
   export const questionPapersData: QuestionPaper[] = [
     // Existing entries
-    { id: "qp1", subject: "Introduction to Information Technology", title: "Introduction to IT - 2022", year: 2022, facultyId: "csit", semesterId: "1", downloadUrl: "https://example.com/question-paper/it-2022.pdf", uploadedAt: "2022-07-10T10:00:00Z" },
+    { id: "qp1", subject: "Introduction to Information Technology", title: "Introduction to IT - 2022", year: 2022, facultyId: "csit", semesterId: "1", downloadUrl: "https://icseindia.org/document/sample.pdf", uploadedAt: "2022-07-10T10:00:00Z" },
     { id: "qp2", subject: "Programming in C", title: "Programming in C - 2021", year: 2021, facultyId: "csit", semesterId: "1", downloadUrl: "https://example.com/question-paper/c-2021.pdf", uploadedAt: "2021-06-05T12:30:00Z" },
     { id: "qp3", subject: "Database Management Systems", title: "Database Management Systems - 2023", year: 2023, facultyId: "csit", semesterId: "4", downloadUrl: "https://example.com/question-paper/dbms-2023.pdf", uploadedAt: "2023-07-01T14:00:00Z" },
     { id: "qp4", subject: "Human Anatomy", title: "Human Anatomy - 2022", year: 2022, facultyId: "mbbs", semesterId: "1", downloadUrl: "https://example.com/question-paper/anatomy-2022.pdf", uploadedAt: "2022-09-12T09:15:00Z" },
