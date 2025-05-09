@@ -16,12 +16,12 @@ const AdminPanel = () => {
   const { toast } = useToast();
   
   // Authentication check
-  useEffect(() => {
-    const isAdminLoggedIn = localStorage.getItem("isAdminLoggedIn");
-    if (isAdminLoggedIn !== "true") {
-      navigate("/login");
-    }
-  }, [navigate]);
+// useEffect(() => {
+//     const isAdminLoggedIn = localStorage.getItem("isAdminLoggedIn");
+//     if (isAdminLoggedIn !== "true") {
+//       navigate("/login");
+//     }
+//   }, [navigate]);
 
   // Content type
   const [contentType, setContentType] = useState<"papers" | "notes" | "revision">("papers");
@@ -44,21 +44,24 @@ const AdminPanel = () => {
 
     const faculty = facultyData.find(f => f.id === value);
     if (faculty) {
-      setStructures(Object.keys(faculty.structure));
+      // Get semester/year names for the dropdown
+      const structureOptions = faculty.structure.map(item => item.id);
+      setStructures(structureOptions);
     } else {
       setStructures([]);
     }
   };
 
-  // Handle semester/structure change
-  const handleStructureChange = (value: string) => {
-    setSelectedStructure(value);
-    
-    const faculty = facultyData.find(f => f.id === selectedFaculty);
-    if (faculty) {
-      setSubjects(faculty.structure[value] || []);
-    }
-  };
+ // Updated semester/structure change handler
+ const handleStructureChange = (value: string) => {
+  setSelectedStructure(value);
+  
+  const faculty = facultyData.find(f => f.id === selectedFaculty);
+  if (faculty) {
+    const selectedSemester = faculty.structure.find(item => item.id === value);
+    setSubjects(selectedSemester?.subjects || []);
+  }
+};
 
   // Available years (last 10 years)
   const currentYear = new Date().getFullYear();
@@ -212,23 +215,25 @@ const AdminPanel = () => {
                     <div className="space-y-2">
                       <Label htmlFor="semester">Semester</Label>
                       <Select 
-                        value={selectedStructure} 
-                        onValueChange={handleStructureChange}
-                        disabled={!selectedFaculty}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select semester" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {structures.map((structure, index) => (
-                            <SelectItem key={index} value={structure}>
-                          {structure.replace(/(semester|year)(\d+)/i, (match, word, num) => 
-  `${word.charAt(0).toUpperCase() + word.slice(1)} ${num}`
-)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+      value={selectedStructure} 
+      onValueChange={handleStructureChange}
+      disabled={!selectedFaculty}
+    >
+      <SelectTrigger>
+        <SelectValue placeholder={`Select ${facultyData.find(f => f.id === selectedFaculty)?.type || 'period'}`} />
+      </SelectTrigger>
+      <SelectContent>
+        {structures.map((structureId) => {
+          const faculty = facultyData.find(f => f.id === selectedFaculty);
+          const structureItem = faculty?.structure.find(item => item.id === structureId);
+          return (
+            <SelectItem key={structureId} value={structureId}>
+              {structureItem?.name || structureId}
+            </SelectItem>
+          );
+        })}
+      </SelectContent>
+    </Select>
                     </div>
                     
                     <div className="space-y-2">

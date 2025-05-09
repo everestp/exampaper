@@ -3,7 +3,9 @@ import { createContext, useContext, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { useToast } from "@/components/ui/use-toast";
-import { facultyData, Faculty } from "@/lib/facultyData";
+import { facultyData ,Faculty} from "@/lib/facultyData";
+
+
 
 interface FacultyContextType {
   selectedFaculty: Faculty | null;
@@ -14,6 +16,7 @@ const FacultyContext = createContext<FacultyContextType | undefined>(undefined);
 
 export function FacultyProvider({ children }: { children: React.ReactNode }) {
   const params = useParams<{ facultyId: string }>();
+  console.log("Falcuty context this is   inside the param",params.facultyId)
   const [selectedFaculty, setSelectedFaculty] = useState<Faculty | null>(() => {
     if (params.facultyId) {
       return facultyData.find(f => f.id === params.facultyId) || null;
@@ -27,6 +30,7 @@ export function FacultyProvider({ children }: { children: React.ReactNode }) {
     const faculty = facultyData.find(f => f.id === facultyId);
     if (faculty) {
       setSelectedFaculty(faculty);
+      console.log("This= is the data inside the selected faculty",selectedFaculty)
       toast({
         title: "Faculty Selected",
         description: `You've selected ${faculty.name} faculty`,

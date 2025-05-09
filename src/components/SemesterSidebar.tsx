@@ -11,6 +11,7 @@ export function SemesterSidebar() {
   const location = useLocation();
   const { facultyId, semesterId } = useParams();
   const { selectedFaculty } = useFaculty();
+  console.log("This is seleceted faculty   from semester side bar",selectedFaculty)
 
   // Extract the current subject ID from the URL if it exists
   const subjectMatch = location.pathname.match(/\/subject\/([^/]+)/);
@@ -70,29 +71,29 @@ export function SemesterSidebar() {
           defaultValue={semesterId || undefined}
           className="w-full"
         >
-          {semesterData.map((semester) => (
+          {selectedFaculty.structure.map((semester) => (
             <AccordionItem key={semester.id} value={semester.id}>
               <AccordionTrigger className="px-3 py-2 hover:bg-accent hover:text-accent-foreground rounded-md">
                 {semester.name}
               </AccordionTrigger>
               <AccordionContent>
                 <div className="pl-5 space-y-1">
-                  {semester.subjects.map((subject) => (
+                  {semester.subjects.map((subject,index) => (
                     <Button
-                      key={subject.id}
-                      variant={currentSubjectId === subject.id ? "secondary" : "ghost"}
+                      key={subject}
+                      variant={currentSubjectId === index.toString() ? "secondary" : "ghost"}
                       className="w-full justify-start"
                       asChild
                     >
                       <Link 
                         to={isNotesSection
-                          ? `/faculty/${facultyId}/notes/semester/${semester.id}/subject/${subject.id}`
+                          ? `/faculty/${facultyId}/notes/semester/${semester.id}/subject/${subject}`
                           : isRevisionSection
-                            ? `/faculty/${facultyId}/revision/semester/${semester.id}/subject/${subject.id}`
-                            : `/faculty/${facultyId}/semester/${semester.id}/subject/${subject.id}`
+                            ? `/faculty/${facultyId}/revision/semester/${semester.id}/subject/${subject}`
+                            : `/faculty/${facultyId}/semester/${semester.id}/subject/${subject}`
                         }
                       >
-                        {subject.name}
+                        {subject}
                       </Link>
                     </Button>
                   ))}

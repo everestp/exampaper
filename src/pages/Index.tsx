@@ -3,14 +3,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { semesterData, facultyData } from "@/lib/data";
+import {  facultyData } from "@/lib/facultyData";
 import { ArrowRight, BookOpen, FileText, GraduationCap } from "lucide-react";
 import { useFaculty } from "@/contexts/FacultyContext";
 
 const Index = () => {
   // Get the first 2 semesters for the featured section
-  const featuredSemesters = semesterData.slice(0, 2);
-  const { selectFaculty } = useFaculty();
+
+  const { selectFaculty ,selectedFaculty} = useFaculty();
   const navigate = useNavigate();
   
   const handleFacultySelect = (facultyId: string) => {
@@ -61,7 +61,7 @@ const Index = () => {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground">
-                      Find question papers, study notes and revision materials for all eight semesters.
+                      Question papers,  Study notes , Revision materials
                     </p>
                   </CardContent>
                   <CardFooter>
