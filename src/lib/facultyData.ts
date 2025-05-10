@@ -610,7 +610,7 @@ export interface RevisionMaterial {
     return questionPapersData
       .filter(paper => paper.facultyId === facultyId && paper.semesterId === semesterId && paper.subject === subject)
       .sort((a, b) => b.year - a.year);
-  };
+  }
   
   export const getNotes = (facultyId: string, semesterId: string, subject: string): Note[] => {
     return notesData

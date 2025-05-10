@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { useDispatch } from "react-redux";
 import authService from "@/appwrite/auth";
-import { login as authLogin, logout } from "../store/authSlice";
+import { login as authLogin} from "../store/authSlice";
 
 const AdminLogin = () => {
   const [data, setData] = useState({

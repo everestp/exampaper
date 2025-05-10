@@ -11,14 +11,16 @@ import {
   Edit,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import { useSelector } from "react-redux";
+import store from "@/store/store";
+import { RootState } from "@/store/store";
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen((prev) => !prev);
   };
-
+const {userData} = useSelector((store:RootState)=>store.auth)
   return (
     <nav className="bg-white shadow-md dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,7 +75,7 @@ const Header = () => {
 
             <Link to="/login">
               <Button className="bg-blue-600 text-white hover:bg-blue-700">
-                Login
+               {userData? `Go to DashBoard`: "Login"}
               </Button>
             </Link>
           </div>

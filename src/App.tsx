@@ -9,9 +9,10 @@ import AppRoutes from "./AppRoutes";
 import AdminPanel from "./pages/AdminPanel";
 import { useDispatch } from "react-redux";
 import authService from "./appwrite/auth";
-import { login, logout } from "./store/authSlice";
+import { login, logout1 } from "./store/authSlice";
 
 import { ToastContainer } from 'react-toastify';
+import storageService from "./appwrite/config";
 
 
  
@@ -21,18 +22,25 @@ const queryClient = new QueryClient();
 // Make App a function component rather than an arrow function constant
 function App() {
 
+  const getPaper =async ()=>{
+   const re= await storageService.getPaper()
+   console.log("This is the data from getpaper",re.documents.subject)
+   console.log("This is the data from getpaper",re.documents)
+  }
   const dispatch = useDispatch()
 
   useEffect(()=>{
-  authService.getCurrentUser()
-  .then((userData :{email:string ,password:string})=>{
-    if(userData){
-      dispatch(login({userData}))
-    }
-    else{
-      dispatch(logout())
-    }
-  })
+    authService.getCurrentUser()
+    .then((userData :{email:string ,password:string})=>{
+      if(userData){
+        dispatch(login({userData}))
+      }
+      else{
+        dispatch(logout1())
+      }
+  
+    })
+   getPaper()
   },[])
   return (
     <QueryClientProvider client={queryClient}>

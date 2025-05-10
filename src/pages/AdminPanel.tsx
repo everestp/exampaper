@@ -11,7 +11,41 @@ import { toast, useToast } from "@/components/ui/use-toast";
 import { facultyData } from "@/lib/facultyData";
 import { Plus, File, Trash, FileText, BookOpen } from "lucide-react";
 import { RootState } from "../store/store.ts";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import authService from "@/appwrite/auth.ts";
+import { logout1} from "@/store/authSlice.ts";
+import storageService from "@/appwrite/config.ts";
+import conf from "@/conf/conf.ts";
+
+
+
+interface PaperData {
+  subject: string;
+  title: string;
+  year: number | null;
+  facultyId: string;
+  semesterId: string;
+  downloadUrl: string;
+  file :File
+}
+
+interface RevisionData {
+  subject: string;
+  title: string;
+  facultyId: string;
+  semesterId: string;
+  downloadUrl: string;
+  file :File
+}
+
+interface NoteData {
+  subject: string;
+  title: string;
+  facultyId: string;
+  semesterId: string;
+  downloadUrl: string;
+  file :File
+}
 
 
 const AdminPanel = () => {
@@ -30,21 +64,25 @@ useEffect(() => {
   }, [navigate]);
 
   // Content type
-  const [contentType, setContentType] = useState<"papers" | "notes" | "revision">("papers");
+  const [contentType, setContentType] = useState<string>("papers");
+
 
   // Upload form state 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [semsesterId ,setSemesterId] = useState<string>("")
   const [selectedFaculty, setSelectedFaculty] = useState("");
   const [selectedStructure, setSelectedStructure] = useState("");
   const [structures, setStructures] = useState<string[]>([]);
   const [subjects, setSubjects] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>("");
   const [title, setTitle] = useState("");
+  const [subject ,setSubject] = useState<string>("")
   const [isUploading, setIsUploading] = useState(false);
-  
+  const dispatch = useDispatch()
   // Handle faculty change
   const handleFacultyChange = (value: string) => {
     setSelectedFaculty(value);
+    console.log("This is the selecetd faculty",selectedFaculty)
     setSelectedStructure("");
     setSubjects([]);
 
@@ -57,6 +95,16 @@ useEffect(() => {
       setStructures([]);
     }
   };
+
+  // update subject
+  const handleSubject = (value:string)=>{
+setSubject(value)
+  }
+
+  //upadate seelscted semester
+  const handleSemester = (value:string)=>{
+    setSemesterId(value)
+      }
 
  // Updated semester/structure change handler
  const handleStructureChange = (value: string) => {
@@ -83,9 +131,53 @@ useEffect(() => {
     }
   };
 
-  const handleUpload = (e: React.FormEvent) => {
+  const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    console.log("Does data isgettuing for handle uplaod",selectedFaculty,selectedFile,selectedYear ,subject,subjects ,selectedStructure)
+
+if(contentType==="papers"){
+const file =  await storageService.uploadFile(selectedFile)
+console.log("this is the file response after uploading",file)
+
+if(file){
+  const fileId = file.$id
+ const url = storageService.getFilePreview(fileId)
+ const paperData = {
+  subject :subject,
+  title :title,
+  facultyId :selectedFaculty,
+  year :parseInt(selectedYear),
+  downloadUrl:url,
+  semesterId:selectedStructure
+
+}
+ const response = await storageService.postQuestion(paperData)
+ console.log("This is the file Url",url)
+ console.log("This is th response after fie upoaded create a question and upadarte",response)
+}
+
+  const paperData = {
+    subject :subject,
+    title :title,
+    facultyId :selectedFaculty,
+    year :selectedYear,
+    downloadUrl:"",
+    semesterId:selectedStructure
+
+  }
+  console.log("This is the paper data",paperData)
+  console.log(" we are going to upoad paper ")
+}
+if(contentType==="notes"){
+  console.log(" we are going to notes ")
+}
+
+if(contentType==="revision"){
+  console.log(" we are going to revision ")
+}
+
+
+
     const requiredFields = [selectedFile, selectedFaculty, selectedStructure, subjects.length > 0];
     if (contentType === "papers" && !selectedYear) {
       requiredFields.push(true);
@@ -121,7 +213,8 @@ useEffect(() => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isAdminLoggedIn");
+  authService.logout()
+  dispatch(logout1())
     navigate("/login");
   };
 
@@ -203,7 +296,15 @@ useEffect(() => {
                       <Label htmlFor="faculty">Faculty</Label>
                       <Select 
                         value={selectedFaculty} 
-                        onValueChange={handleFacultyChange}
+                        onValueChange={
+                          
+                            handleFacultyChange
+                          }
+                          
+
+
+
+                        
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select faculty" />
@@ -219,14 +320,14 @@ useEffect(() => {
                     </div>
                   
                     <div className="space-y-2">
-                      <Label htmlFor="semester">Semester</Label>
+                      <Label htmlFor="semester">Level</Label>
                       <Select 
       value={selectedStructure} 
       onValueChange={handleStructureChange}
       disabled={!selectedFaculty}
     >
       <SelectTrigger>
-        <SelectValue placeholder={`Select ${facultyData.find(f => f.id === selectedFaculty)?.type || 'period'}`} />
+        <SelectValue placeholder={`Select ${facultyData.find(f => f.id === selectedFaculty)?.type || 'Level'}`} />
       </SelectTrigger>
       <SelectContent>
         {structures.map((structureId) => {
@@ -246,6 +347,7 @@ useEffect(() => {
                       <Label htmlFor="subject">Subject</Label>
                       <Select 
                         disabled={!selectedStructure}
+                     onValueChange={handleSubject}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select subject" />
@@ -385,3 +487,7 @@ useEffect(() => {
 };
 
 export default AdminPanel;
+
+function logout(): any {
+  throw new Error("Function not implemented.");
+}

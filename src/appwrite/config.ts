@@ -19,14 +19,14 @@ export class StorageService {
     subject,
     title,
     year,
-    facultyID,
+    facultyId,
     semesterId,
     downloadUrl,
   }: {
     subject: string;
     title: string;
     year: number;
-    facultyID: string;
+    facultyId: string;
     semesterId: string;
     downloadUrl: string;
   }): Promise<any> {
@@ -39,7 +39,7 @@ export class StorageService {
           subject,
           title,
           year,
-          facultyID,
+          facultyId,
           semesterId,
           downloadUrl,
         }
@@ -101,6 +101,7 @@ export class StorageService {
         conf.appwriteNoteCollectionId,
         ID.unique(),
         {
+
           subject,
           title,
           facultyID,
@@ -134,8 +135,37 @@ export class StorageService {
   }
 
   getFilePreview(fileId: string): string {
-    return this.bucket.getFilePreview(conf.appwriteBucketId, fileId);
+    return this.bucket.getFileView(conf.appwriteBucketId, fileId);
   }
+
+   async getPaper(){
+try {
+ const questionPaperData = await this.databases.listDocuments(conf.appwriteDatabaseId ,conf.appwriteQuestionCollectionId)
+ console.log("Thsi is th epapert data fro, cionf",questionPaperData)
+ return questionPaperData.documents
+} catch (error) {
+    console.log("Error fetching data",error)
+}
+   }
+   async getNote(){
+    try {
+     const questionPaperData = await this.databases.listDocuments(conf.appwriteDatabaseId ,conf.appwriteNoteCollectionId)
+     console.log("Thsi is th epapert data fro, cionf",questionPaperData)
+     return questionPaperData.documents
+    } catch (error) {
+        console.log("Error fetching data",error)
+    }
+       }
+
+       async getRevision(){
+        try {
+         const questionPaperData = await this.databases.listDocuments(conf.appwriteDatabaseId ,conf.appwriteRevisionCollectionId)
+         console.log("Thsi is th epapert data fro, cionf",questionPaperData)
+         return questionPaperData.documents
+        } catch (error) {
+            console.log("Error fetching data",error)
+        }
+           }
 }
 
 const storageService = new StorageService();
