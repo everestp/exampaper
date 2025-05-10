@@ -9,11 +9,12 @@ import { useFaculty } from "@/contexts/FacultyContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Download, FileText } from "lucide-react";
 import PDFViewer from "@/components/books/PDFViewer";
+import { useData } from "@/contexts/DataContext";
 
 const RevisionPage = () => {
   const { facultyId, semesterId, subject } = useParams();
   const { selectedFaculty } = useFaculty();
-
+const {revisionData} = useData()
   // Find the current semester
   const semester = selectedFaculty.structure.find((s) => s.id === semesterId);
   
@@ -24,12 +25,16 @@ const RevisionPage = () => {
     return <Navigate to="/not-found" />;
   }
 
-
-
+  const filterRevisionData= (facultyId: string, semesterId: string, subject: string)=>{
+    return revisionData
+    .filter(paper => paper.facultyId === facultyId && paper.semesterId === semesterId && paper.subject === subject)
+      .sort((a, b) => b.year - a.year);
+  }
+  
   // If we're viewing revision materials for a specific subject
   if (subject) {
     // Get revision materials for this subject
-    const revisionMaterials = getRevisionMaterials(facultyId, semesterId!, subject!);
+    const revisionMaterials = filterRevisionData(facultyId, semesterId!, subject!);
 
     return (
       <div className="container flex flex-col md:flex-row gap-6 py-8">

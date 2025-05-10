@@ -53,13 +53,13 @@ export class StorageService {
   async postRevision({
     subject,
     title,
-    facultyID,
+    facultyId,
     semesterId,
     downloadUrl,
   }: {
     subject: string;
     title: string;
-    facultyID: string;
+    facultyId: string;
     semesterId: string;
     downloadUrl: string;
   }): Promise<any> {
@@ -71,7 +71,7 @@ export class StorageService {
         {
           subject,
           title,
-          facultyID,
+          facultyId,
           semesterId,
           downloadUrl,
         }
@@ -85,13 +85,13 @@ export class StorageService {
   async postNote({
     subject,
     title,
-    facultyID,
+    facultyId,
     semesterId,
     downloadUrl,
   }: {
     subject: string;
     title: string;
-    facultyID: string;
+    facultyId: string;
     semesterId: string;
     downloadUrl: string;
   }): Promise<any> {
@@ -104,7 +104,7 @@ export class StorageService {
 
           subject,
           title,
-          facultyID,
+          facultyId,
           semesterId,
           downloadUrl,
         }

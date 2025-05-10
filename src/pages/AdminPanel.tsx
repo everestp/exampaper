@@ -156,25 +156,55 @@ if(file){
  console.log("This is th response after fie upoaded create a question and upadarte",response)
 }
 
-  const paperData = {
+
+}
+if(contentType==="notes"){
+  const file =  await storageService.uploadFile(selectedFile)
+  console.log("this is the file response after uploading",file)
+  
+  if(file){
+    const fileId = file.$id
+   const url = storageService.getFilePreview(fileId)
+   const noteData = {
     subject :subject,
     title :title,
     facultyId :selectedFaculty,
-    year :selectedYear,
-    downloadUrl:"",
+    year :null,
+    downloadUrl:url,
     semesterId:selectedStructure
-
+  
   }
-  console.log("This is the paper data",paperData)
-  console.log(" we are going to upoad paper ")
-}
-if(contentType==="notes"){
-  console.log(" we are going to notes ")
-}
+   const response = await storageService.postNote(noteData)
+   console.log("This is the file Url",url)
+   console.log("This is th response after fie upoaded create a question and upadarte",response)
+  }
+  
+  
+  }
 
-if(contentType==="revision"){
-  console.log(" we are going to revision ")
-}
+  if(contentType==="revision"){
+    const file =  await storageService.uploadFile(selectedFile)
+    console.log("this is the file response after uploading",file)
+    
+    if(file){
+      const fileId = file.$id
+     const url = storageService.getFilePreview(fileId)
+     const revisionData = {
+      subject :subject,
+      title :title,
+      facultyId :selectedFaculty,
+      year :null,
+      downloadUrl:url,
+      semesterId:selectedStructure
+    
+    }
+     const response = await storageService.postQuestion(revisionData)
+     console.log("This is the file Url",url)
+     console.log("This is th response after fie upoaded create a question and upadarte",response)
+    }
+    
+    
+    }
 
 
 

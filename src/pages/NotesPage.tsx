@@ -11,6 +11,7 @@ import { BookOpen, Download, Eye } from "lucide-react";
 import { useState } from "react";
 import Modal from "react-modal";
 import PDFViewer from "@/components/books/PDFViewer";
+import { useData } from "@/contexts/DataContext";
 
 
 
@@ -19,7 +20,7 @@ import PDFViewer from "@/components/books/PDFViewer";
 const NotesPage = () => {
   const { facultyId, semesterId, subject } = useParams();
   const { selectedFaculty } = useFaculty();
-
+ const [noteData] = useData()
   // Find the current semester
   const semester = selectedFaculty.structure.find((s) => s.id === semesterId);
   
@@ -35,11 +36,19 @@ const NotesPage = () => {
   if (semesterId && !currentSubject) {
     return <Navigate to="/not-found" />;
   }
-
+  const filterNoteData = (facultyId: string, semesterId: string, subject: string)=>{
+    return noteData
+    .filter(paper => paper.facultyId === facultyId && paper.semesterId === semesterId && paper.subject === subject)
+      .sort((a, b) => b.year - a.year);
+  }
+  
   // If we're viewing notes for a specific subject
   if (subject) {
+
+
+
     // Get notes for this subject
-    const notes = getNotes(facultyId, semesterId!, subject!);
+    const notes = filterNoteData(facultyId, semesterId!, subject!);
 
     return (
       <div className="container flex flex-col md:flex-row gap-6 py-8">

@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { useToast } from "@/components/ui/use-toast";
@@ -7,9 +7,11 @@ import { facultyData ,Faculty} from "@/lib/facultyData";
 
 
 
+
 interface FacultyContextType {
   selectedFaculty: Faculty | null;
   selectFaculty: (facultyId: string) => void;
+
 }
 
 const FacultyContext = createContext<FacultyContextType | undefined>(undefined);
@@ -23,6 +25,13 @@ export function FacultyProvider({ children }: { children: React.ReactNode }) {
     }
     return null;
   });
+
+
+
+  
+  
+
+
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -37,9 +46,53 @@ export function FacultyProvider({ children }: { children: React.ReactNode }) {
       });
     }
   };
+  const contextValue = {
+    selectedFaculty,
+    selectFaculty,
+   
+
+  }
+
+  const getPaper = async()=>{
+
+    try {
+      const response = await storageService.getPaper()
+  setNoteData(response)
+      
+    } catch (error) {
+      console.log("Error fetching  Paper Data",error)
+    }
+  }
+  const getNote = async()=>{
+
+    try {
+      const response = await storageService.getNote()
+  setNoteData(response)
+      
+    } catch (error) {
+      console.log("Error fetching  Note Data",error)
+    }
+  }
+
+  const getRevision = async()=>{
+
+    try {
+      const response = await storageService.getRevision()
+  setRevisionData(response)
+      
+    } catch (error) {
+      console.log("Error fetching  Revisio nData",error)
+    }
+  }
+useEffect(()=>{
+getPaper()
+getNote()
+getRevision()
+},[])
+
 
   return (
-    <FacultyContext.Provider value={{ selectedFaculty, selectFaculty }}>
+    <FacultyContext.Provider value={contextValue}>
       {children}
     </FacultyContext.Provider>
   );

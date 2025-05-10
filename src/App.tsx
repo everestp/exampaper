@@ -13,6 +13,9 @@ import { login, logout1 } from "./store/authSlice";
 
 import { ToastContainer } from 'react-toastify';
 import storageService from "./appwrite/config";
+import { questionPapersData } from "./lib/facultyData";
+import { useFaculty } from "./contexts/FacultyContext";
+import { DataContextProvider } from "./contexts/DataContext";
 
 
  
@@ -24,8 +27,8 @@ function App() {
 
   const getPaper =async ()=>{
    const re= await storageService.getPaper()
-   console.log("This is the data from getpaper",re.documents.subject)
-   console.log("This is the data from getpaper",re.documents)
+   console.log("This is the data from getpaper",re)
+   console.log("This is the data from getpaper",re)
   }
   const dispatch = useDispatch()
 
@@ -37,12 +40,16 @@ function App() {
       }
       else{
         dispatch(logout1())
+       
       }
   
     })
    getPaper()
+   console.log("This is the question ap[per darta full da ta in getp[aper",questionPapersData)
   },[])
   return (
+
+    <DataContextProvider>
     <QueryClientProvider client={queryClient}>
       <ToastContainer/>
       <BrowserRouter>
@@ -55,6 +62,9 @@ function App() {
     
       </BrowserRouter>
     </QueryClientProvider>
+
+
+    </DataContextProvider>
   );
 }
 

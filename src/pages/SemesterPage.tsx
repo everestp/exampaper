@@ -9,10 +9,12 @@ import { useFaculty } from "@/contexts/FacultyContext";
 import { facultyData } from "@/lib/facultyData";
 import { useState } from "react";
 import { sub } from "date-fns";
+import { useData } from "@/contexts/DataContext";
 const SemesterPage = () => {
   const { facultyId, semesterId } = useParams();
   console.log("This is semsteer page facId seemId",facultyId,semesterId)
-  const { selectedFaculty } = useFaculty();
+  const { selectedFaculty} = useFaculty();
+  const {paperData} = useData()
   const [selectedSemester, setSelectedSemester] = useState<string | null>(null);
   const [subjects, setSubjects] = useState<string[]>([]);
 
@@ -21,6 +23,8 @@ console.log("This is theee facutyid and Semester Id", facultyId,semesterId)
   const faculty = facultyData.find(s => s.id === facultyId);
 
 console.log("Does the semester  data is printed Sucessfuly",faculty)
+console.log("Does the semester  data is paperttertertertertgert====t==er=t=ert=er=ter=t=er=terty",paperData)
+
 // alert(faculty.name)
   // If semester not found or no faculty selected, navigate to 404
   if (!faculty || !facultyId || !selectedFaculty) {

@@ -16,6 +16,7 @@ import { useFaculty } from "@/contexts/FacultyContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, Download, Eye } from "lucide-react";
 import PDFViewer from "@/components/books/PDFViewer";
+import { useData } from "@/contexts/DataContext";
 
 
 // Set Modal accessibility
@@ -41,7 +42,7 @@ const SubjectPage = () => {
     subject: string;
   }>();
   const { selectedFaculty } = useFaculty();
-
+const {paperData} = useData()
   // Validate parameters and faculty data
   if (!facultyId || !semesterId || !subject || !selectedFaculty) {
     return <Navigate to="/not-found" />;
@@ -57,7 +58,13 @@ const SubjectPage = () => {
   }
 
   // Get question papers for this subject
-  const questionPapers: QuestionPaper[] = getQuestionPapers(facultyId, semesterId, subject);
+
+  const filterQuestionPaper = (facultyId: string, semesterId: string, subject: string) :QuestionPaper[]=>{
+    return paperData
+    .filter(paper => paper.facultyId === facultyId && paper.semesterId === semesterId && paper.subject === subject)
+      .sort((a, b) => b.year - a.year);
+  }
+  const questionPapers: QuestionPaper[] = filterQuestionPaper(facultyId,semesterId,subject);
 
   // Group question papers by year
   const papersByYear = questionPapers.reduce(
@@ -76,7 +83,7 @@ const SubjectPage = () => {
   const sortedYears = Object.keys(papersByYear)
     .map(Number)
     .sort((a, b) => b - a);
-
+console.log("this is the question paper fata",questionPapers)
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="flex flex-col md:flex-row gap-8">
