@@ -7,7 +7,14 @@ import { facultyData, getNotes } from "@/lib/facultyData";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { useFaculty } from "@/contexts/FacultyContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Download, Eye } from "lucide-react";
+import { useState } from "react";
+import Modal from "react-modal";
+import PDFViewer from "@/components/books/PDFViewer";
+
+
+
+
 
 const NotesPage = () => {
   const { facultyId, semesterId, subject } = useParams();
@@ -111,14 +118,26 @@ const NotesPage = () => {
                                 Uploaded: {new Date(note.uploadedAt).toLocaleDateString()}
                               </p>
                             </div>
-                            <div className="flex gap-2">
-                              <Button variant="outline" size="sm">
-                                View
-                              </Button>
-                              <Button variant="default" size="sm" className="bg-study-600 hover:bg-study-700">
-                                Download
-                              </Button>
-                            </div>
+                            <div className="flex gap-3">
+                                {/* View Button with PDFViewer */}
+                                <PDFViewer pdfUrl={note.downloadUrl} />
+                                {/* Download Button */}
+                                <Button
+                                  variant="default"
+                                  size="sm"
+                                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white"
+                                  asChild
+                                >
+                                  <a
+                                    href={note.downloadUrl}
+                                    download
+                                    rel="noopener noreferrer"
+                                  >
+                                    <Download className="w-4 h-4" />
+                                    Download
+                                  </a>
+                                </Button>
+                              </div>
                           </li>
                         ))}
                       </ul>

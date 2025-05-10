@@ -590,7 +590,7 @@ export interface RevisionMaterial {
   ];
   
   export const notesData: Note[] = [
-    { id: "note1", subject: "Introduction to Information Technology", title: "IT Notes", facultyId: "csit", semesterId: "1", downloadUrl: "https://example.com/notes/it.pdf", uploadedAt: "2022-08-15T14:30:00Z" },
+    { id: "note1", subject: "Introduction to Information Technology", title: "IT Notes", facultyId: "csit", semesterId: "1", downloadUrl: "https://file-examples.com/storage/fe8ba66848681e48ba19bca/2017/10/file-sample_150kB.pdf", uploadedAt: "2022-08-15T14:30:00Z" },
     { id: "note2", subject: "Digital Logic", title: "Digital Logic Basics", facultyId: "csit", semesterId: "1", downloadUrl: "https://example.com/notes/digital-logic.pdf", uploadedAt: "2021-07-02T16:00:00Z" },
     { id: "note3", subject: "Database Management Systems", title: "DBMS Concepts", facultyId: "csit", semesterId: "4", downloadUrl: "https://example.com/notes/dbms.pdf", uploadedAt: "2022-09-28T09:00:00Z" },
     { id: "note4", subject: "General Medicine", title: "General Medicine Overview", facultyId: "mbbs", semesterId: "4", downloadUrl: "https://example.com/notes/general-medicine.pdf", uploadedAt: "2022-10-10T13:15:00Z" },

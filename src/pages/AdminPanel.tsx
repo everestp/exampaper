@@ -26,7 +26,7 @@ const AdminPanel = () => {
   // Content type
   const [contentType, setContentType] = useState<"papers" | "notes" | "revision">("papers");
 
-  // Upload form state
+  // Upload form state 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFaculty, setSelectedFaculty] = useState("");
   const [selectedStructure, setSelectedStructure] = useState("");
