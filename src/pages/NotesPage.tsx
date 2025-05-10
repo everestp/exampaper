@@ -20,7 +20,7 @@ import { useData } from "@/contexts/DataContext";
 const NotesPage = () => {
   const { facultyId, semesterId, subject } = useParams();
   const { selectedFaculty } = useFaculty();
- const [noteData] = useData()
+ const {noteData} =  useData()
   // Find the current semester
   const semester = selectedFaculty.structure.find((s) => s.id === semesterId);
   
