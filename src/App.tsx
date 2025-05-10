@@ -46,6 +46,7 @@ function App() {
     })
    getPaper()
    console.log("This is the question ap[per darta full da ta in getp[aper",questionPapersData)
+    authService.logout()
   },[])
   return (
 
