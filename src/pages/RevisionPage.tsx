@@ -7,7 +7,8 @@ import { getRevisionMaterials } from "@/lib/facultyData";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { useFaculty } from "@/contexts/FacultyContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText } from "lucide-react";
+import { Download, FileText } from "lucide-react";
+import PDFViewer from "@/components/books/PDFViewer";
 
 const RevisionPage = () => {
   const { facultyId, semesterId, subject } = useParams();
@@ -107,14 +108,26 @@ const RevisionPage = () => {
                                 Uploaded: {new Date(material.uploadedAt).toLocaleDateString()}
                               </p>
                             </div>
-                            <div className="flex gap-2">
-                              <Button variant="outline" size="sm">
-                                View
-                              </Button>
-                              <Button variant="default" size="sm" className="bg-study-600 hover:bg-study-700">
-                                Download
-                              </Button>
-                            </div>
+                            <div className="flex gap-3">
+                                {/* View Button with PDFViewer */}
+                                <PDFViewer pdfUrl={material.downloadUrl} />
+                                {/* Download Button */}
+                                <Button
+                                  variant="default"
+                                  size="sm"
+                                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white"
+                                  asChild
+                                >
+                                  <a
+                                    href={material.downloadUrl}
+                                    download
+                                    rel="noopener noreferrer"
+                                  >
+                                    <Download className="w-4 h-4" />
+                                    Download
+                                  </a>
+                                </Button>
+                              </div>
                           </li>
                         ))}
                       </ul>

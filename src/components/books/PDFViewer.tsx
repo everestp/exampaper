@@ -37,7 +37,7 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50"
       >
-        <div className="bg-white p-4 rounded-lg w-full sm:w-3/4 h-[calc(100vh-80px)] sm:h-[calc(100vh-40px)] overflow-auto relative max-w-4xl mx-auto flex flex-col">
+<div className="bg-white p-4 rounded-lg w-[90%] sm:w-[75%] h-[calc(100vh-80px)] sm:h-[calc(100vh-40px)] overflow-auto relative max-w-4xl mx-auto flex flex-col">
           {/* Close Button */}
           <button
             onClick={() => setIsOpen(false)}
@@ -81,7 +81,7 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
           </div>
 
           {/* PDF Display */}
-          <div className="flex-1 overflow-auto bg-muted/30 h-full">
+          <div className="flex-1 overflow-auto bg-muted/30 h-full w-full">
             <iframe
               src={`${pdfUrl}#toolbar=0&zoom=${zoom * 100}`}
               title="PDF Viewer"
