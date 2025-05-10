@@ -12,8 +12,7 @@ interface LoginParams {
   email: string;
   password: string;
 }
-
-export class AuthService {
+ class AuthService {
   private client: Client;
   private account: Account;
 
@@ -44,7 +43,7 @@ export class AuthService {
 
   async login({ email, password }: LoginParams): Promise<any> {
     try {
-      const response = await this.account.createEmailSession(email, password);
+      const response = await this.account.createEmailPasswordSession(email, password);
       return response;
     } catch (error) {
       throw error;

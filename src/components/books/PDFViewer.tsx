@@ -50,34 +50,7 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
           {/* PDF Viewer Controls */}
           <div className="border-b p-2 flex justify-between items-center bg-muted/50">
             <div className="text-sm font-medium">PDF Viewer</div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleZoomOut}
-                disabled={zoom <= 0.5}
-                aria-label="Zoom Out"
-              >
-                -
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleResetZoom}
-                aria-label="Reset Zoom"
-              >
-                {Math.round(zoom * 100)}%
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleZoomIn}
-                disabled={zoom >= 2}
-                aria-label="Zoom In"
-              >
-                +
-              </Button>
-            </div>
+           
           </div>
 
           {/* PDF Display */}

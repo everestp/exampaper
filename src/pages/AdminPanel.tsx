@@ -7,21 +7,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useToast } from "@/components/ui/use-toast";
+import { toast, useToast } from "@/components/ui/use-toast";
 import { facultyData } from "@/lib/facultyData";
 import { Plus, File, Trash, FileText, BookOpen } from "lucide-react";
+import { RootState } from "../store/store.ts";
+import { useSelector } from "react-redux";
+
 
 const AdminPanel = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
-  
-  // Authentication check
-// useEffect(() => {
-//     const isAdminLoggedIn = localStorage.getItem("isAdminLoggedIn");
-//     if (isAdminLoggedIn !== "true") {
-//       navigate("/login");
-//     }
-//   }, [navigate]);
+  const { status, userData } = useSelector((state: RootState) => state.auth);
+ console.log("This is the status",status)
+
+
+// Authentication check
+useEffect(() => {
+   
+    if (!status) {
+      navigate("/login");
+    }
+
+  }, [navigate]);
 
   // Content type
   const [contentType, setContentType] = useState<"papers" | "notes" | "revision">("papers");

@@ -1,35 +1,64 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {toast as toast2}  from 'react-toastify'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { useDispatch } from "react-redux";
+import authService from "@/appwrite/auth";
+import { login as authLogin, logout } from "../store/authSlice";
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const [isLoading, setIsLoading] = useState(false);
-  
   const navigate = useNavigate();
   const { toast } = useToast();
+  const dispatch = useDispatch(); // Fixed typo
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const login = async (data: { email: string; password: string }) => {
+    try {
+      const session = await authService.login(data);
+      if (session) {
+        const userData = await authService.getCurrentUser();
+        if (userData) {
+          dispatch(authLogin(userData));
+          toast2.success(`Welcome ${userData.name}`)
+          navigate("/admin");
+        }
+      }
+    } catch (error) {
+      console.error("Login error:", error); // Added error handling
+      toast({ description: "Login failed. Please try again.", variant: "destructive" });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Mock login - in a real app, this would call an API
-    setTimeout(() => {
-      // For demo purposes, any login works
-      localStorage.setItem("isAdminLoggedIn", "true");
-      toast({
-        title: "Login successful",
-        description: "You are now logged in as an admin",
-      });
-      navigate("/admin");
-      setIsLoading(false);
-    }, 1000);
+  const  response = await login(data)
+
+    setIsLoading(false); // Ensuring loading state resets
   };
 
   return (
@@ -37,9 +66,7 @@ const AdminLogin = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Admin Login</CardTitle>
-          <CardDescription>
-            Enter your credentials to access the admin panel
-          </CardDescription>
+          <CardDescription>Enter your credentials to access the admin panel</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -48,9 +75,10 @@ const AdminLogin = () => {
               <Input
                 id="email"
                 type="email"
+                name="email"
                 placeholder="admin@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={data.email}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -59,8 +87,9 @@ const AdminLogin = () => {
               <Input
                 id="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={data.password}
+                onChange={handleChange}
                 required
               />
             </div>
